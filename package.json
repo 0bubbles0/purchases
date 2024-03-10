@@ -1,0 +1,16 @@
+{
+  "scripts": {
+    "build": "tsc -b",
+    "dev": "nodemon ./src/index.ts"
+  },
+  "dependencies": {
+    "fastify": "^4.26.2"
+  },
+  "devDependencies": {
+    "@tsconfig/node21": "^21.0.1",
+    "@types/node": "^20.11.25",
+    "nodemon": "^3.1.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.2"
+  }
+}
