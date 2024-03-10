@@ -31,6 +31,3 @@ const start = async () => {
 };
 
 start();
-
-
-"x-user-id": string

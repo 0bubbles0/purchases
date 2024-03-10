@@ -34,5 +34,6 @@ export const getByUserId = async (
   } catch (e) {
     // @todo: handle errors
     console.error(e);
+    return response.code(403).send({ statusCode: 403, error: "Unauthorised" });
   }
 };

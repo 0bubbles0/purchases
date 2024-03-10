@@ -1,5 +1,5 @@
 export interface GetByUserRequest {
-  Headers: {};
+  Headers: { "x-user-id": string };
 
   Params: {
     userId?: string;
