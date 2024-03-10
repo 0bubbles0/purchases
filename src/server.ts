@@ -3,8 +3,10 @@ import fastify from "fastify";
 import config from "./config";
 import routes from "./routes";
 
+// App:
 export const buildApp = async (opts = {}) => {
   const app = fastify(opts);
+
   // db
 
   // routes
@@ -13,7 +15,7 @@ export const buildApp = async (opts = {}) => {
   return app;
 };
 
-// server:
+// Server:
 const start = async () => {
   try {
     const app = await buildApp();
@@ -32,5 +34,3 @@ const start = async () => {
 };
 
 start();
-
-// export default buildApp;

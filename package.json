@@ -1,7 +1,7 @@
 {
   "scripts": {
     "build": "tsc -b",
-    "dev": "nodemon ./src/index.ts",
+    "dev": "nodemon ./src/server.ts",
     "test": "jest --forceExit"
   },
   "dependencies": {

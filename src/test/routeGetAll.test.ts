@@ -1,6 +1,6 @@
 import { FastifyInstance } from "fastify";
 
-import { buildApp } from "../index";
+import { buildApp } from "../server";
 
 describe("Basic route test", () => {
   beforeEach(() => jest.clearAllMocks());
