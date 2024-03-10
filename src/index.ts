@@ -66,31 +66,3 @@ const start = async () => {
 };
 
 start();
-
-/** OLD */
-// type
-interface IQuerystring {
-  pagination?: number;
-}
-
-const handlerType = async (request: FastifyRequest, response: FastifyReply) => {
-  const { params, query, body, headers } = request;
-  console.log("hiiiia handler", { params, query, body, headers });
-  return response.code(200).send({ data: { price: 2000 } });
-};
-
-server.get("/3", handlerType);
-
-// Log
-const handlerLog = () => {
-  console.log("hiii handler");
-  return;
-};
-server.route({ method: "GET", url: "/2", handler: handlerLog });
-
-// Basic
-server.get("/1", (request, response) => {
-  const { params, query, body, headers } = request;
-  console.log("hiiii user handler", { params, query, body, headers });
-  return response.code(200).send({ data: { price: 2000 } });
-});
