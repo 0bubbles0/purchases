@@ -1,7 +1,7 @@
 {
   "scripts": {
     "build": "tsc -b",
-    "dev": "nodemon ./src/server.ts",
+    "start": "nodemon -r dotenv/config ./src/server.ts",
     "test": "jest --forceExit"
   },
   "dependencies": {
@@ -14,6 +14,7 @@
   "devDependencies": {
     "@tsconfig/node21": "^21.0.1",
     "@types/node": "^20.11.25",
+    "dotenv": "^16.4.5",
     "nodemon": "^3.1.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.4.2"

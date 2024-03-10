@@ -20,13 +20,8 @@ const start = async () => {
   try {
     const app = await buildApp();
 
-    await app.listen({ port: config.port }, (err, address) => {
-      if (err) {
-        throw err;
-      }
-      console.log(`Server listening at ${address}`);
-      console.log("pooort", process.env.HTTP_PORT);
-    });
+    await app.listen({ port: config.port });
+    console.log(`Server listening at port: ${config.port}`);
   } catch (err) {
     console.error(err);
     process.exit(1);
