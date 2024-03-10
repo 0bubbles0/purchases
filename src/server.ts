@@ -1,11 +1,13 @@
 import fastify from "fastify";
 
 import config from "./config";
-import routes from "./routes";
+import routes from "./http/routes";
 
 // App:
 export const buildApp = async (opts = {}) => {
   const app = fastify(opts);
+
+  // @todo: logging, observability
 
   // db
 
@@ -29,3 +31,6 @@ const start = async () => {
 };
 
 start();
+
+
+"x-user-id": string

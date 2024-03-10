@@ -1,17 +1,20 @@
 import { FastifyInstance, FastifyPluginOptions } from "fastify";
 import fastifyPlugin from "fastify-plugin";
 
-import { RouteReply, RouteRequest } from "../types";
-import handler from "../handlers";
+import handlers from "../handlers";
+import {
+  GetByUserResponse,
+  GetByUserRequest,
+} from "../../schemas/http/getByUserReqRes";
 
 const routes = async (
   server: FastifyInstance,
   options: FastifyPluginOptions
 ) => {
-  server.route<RouteRequest & RouteReply>({
+  server.route<GetByUserRequest & GetByUserResponse>({
     method: "GET",
-    url: "/",
-    handler,
+    url: "/user/:userId",
+    handler: handlers.getByUserId,
     // @todo: schema/pre validation
   });
 };
