@@ -12,6 +12,10 @@ const handler = async (
   const { params, query, body, headers } = request;
   console.log("hiiiias handler", { params, query, body, headers });
 
+  // if (!query.limit) {
+  //   return response.code(401).send({ data: "nooo" });
+  // }
+
   // @todo: authorise request
 
   // @todo: service business logic & await db-queries

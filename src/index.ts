@@ -3,17 +3,22 @@ import fastify from "fastify";
 import config from "./config";
 import routes from "./routes";
 
-const server = fastify();
+export const buildApp = async (opts = {}) => {
+  const app = fastify(opts);
+  // db
 
-// db
+  // routes
+  app.register(routes);
 
-// routes
-server.register(routes);
+  return app;
+};
 
 // server:
 const start = async () => {
   try {
-    await server.listen({ port: config.port }, (err, address) => {
+    const app = await buildApp();
+
+    await app.listen({ port: config.port }, (err, address) => {
       if (err) {
         throw err;
       }
@@ -27,3 +32,5 @@ const start = async () => {
 };
 
 start();
+
+// export default buildApp;
