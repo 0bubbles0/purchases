@@ -1,4 +1,4 @@
-export interface RouteRequest {
+export interface GetByUserRequest {
   Headers: {};
 
   Params: {
@@ -12,12 +12,8 @@ export interface RouteRequest {
   Body: {};
 }
 
-export interface RouteReply {
+export interface GetByUserResponse {
   Reply: {
     200: { success?: boolean; data: { price: number } };
   };
-}
-
-export interface Model {
-  price: number;
 }
