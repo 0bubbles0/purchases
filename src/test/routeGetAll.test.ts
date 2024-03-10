@@ -1,11 +1,21 @@
-import { FastifyInstance } from "fastify";
+import { FastifyInstance, InjectOptions } from "fastify";
 
 import { buildApp } from "../server";
 
+/** Mock data: */
+const mockRequestDetails: InjectOptions = {
+  method: "GET",
+  url: "/",
+  query: {},
+  payload: {},
+  headers: {},
+  cookies: {},
+};
+
 describe("Basic route test", () => {
-  beforeEach(() => jest.clearAllMocks());
-  afterEach(() => jest.clearAllMocks());
+  /** Setup: */
   let app: FastifyInstance;
+  beforeEach(() => jest.clearAllMocks());
 
   beforeAll(async () => {
     app = await buildApp();
@@ -13,29 +23,40 @@ describe("Basic route test", () => {
     await app.ready();
   });
 
+  /** Teardown: */
+  afterEach(() => jest.clearAllMocks());
   afterAll(async () => {
     await app.close();
   });
 
+  /** Route tests: */
   test("Valid GET '/' returns data", async () => {
-    const res = await app.inject({
+    // Arrange:
+    const mockRequest: InjectOptions = {
+      ...mockRequestDetails,
       method: "GET",
       url: "/",
-      query: {},
-      payload: {},
-      headers: {},
-      cookies: {},
-    });
+    };
 
+    // Act:
+    const res = await app.inject(mockRequest);
+
+    // Assert:
     expect(res.json()).toEqual({ data: [{ price: 3000 }] });
   });
 
   test("POST '/' is not found", async () => {
-    const res = await app.inject({
+    // Arrange:
+    const mockRequest: InjectOptions = {
+      ...mockRequestDetails,
       method: "POST",
       url: "/",
-    });
+    };
 
+    // Act:
+    const res = await app.inject(mockRequest);
+
+    // Assert:
     expect(res.json()).toEqual({
       error: "Not Found",
       statusCode: 404,
