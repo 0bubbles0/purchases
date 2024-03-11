@@ -37,3 +37,7 @@ Host: localhost:8080
 x-user-id: 123
 x-client-id: shop
 ```
+
+## System design
+<img width="1015" alt="image" src="https://github.com/0bubbles0/purchases/assets/77367593/e5b03f98-c9d4-457d-a6a4-295298f6deee">
+
