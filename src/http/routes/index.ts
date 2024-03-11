@@ -1,14 +1,13 @@
 import { FastifyInstance, FastifyPluginOptions } from "fastify";
-import fastifyPlugin from "fastify-plugin";
 
-// import handlers from "../handlers";
+import { buildPurchaseRepository } from "../../db/repositories/purchaseRepository";
 import {
   GetByUserResponse,
   GetByUserRequest,
   getByUserJsonSchema,
 } from "../../schemas/http/getByUserReqRes";
+
 import { buildGetByUserIdHandler } from "../handlers/getByUserId";
-import { buildPurchaseRepository } from "../../db/repositories/purchaseRepository";
 
 export const buildRouter =
   (purchaseRepository: ReturnType<typeof buildPurchaseRepository>) =>
@@ -18,22 +17,6 @@ export const buildRouter =
       url: "/user/:userId",
       schema: getByUserJsonSchema,
       handler: buildGetByUserIdHandler(purchaseRepository),
-      // handler: handlers.getByUserId,
       // @todo: pre validation
     });
   };
-
-// const routes = async (
-//   server: FastifyInstance,
-//   options: FastifyPluginOptions
-// ) => {
-//   server.route<GetByUserRequest & GetByUserResponse>({
-//     method: "GET",
-//     url: "/user/:userId",
-//     schema: getByUserJsonSchema,
-//     handler: handlers.getByUserId,
-//     // @todo: pre validation
-//   });
-// };
-
-// export default fastifyPlugin(routes);

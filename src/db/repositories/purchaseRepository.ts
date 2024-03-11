@@ -1,6 +1,4 @@
 import { MongoClient, ObjectId } from "mongodb";
-// import fastify from "fastify";
-// import fastifyMongodb from "@fastify/mongodb";
 
 import { Purchase } from "../../schemas/models/purchase";
 import { Error404NotFound } from "../../schemas/http/errors";

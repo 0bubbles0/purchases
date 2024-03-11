@@ -1,10 +1,8 @@
 import fastify from "fastify";
 import { MongoClient } from "mongodb";
-// import db from "@fastify/mongodb";
 
 import db from "./db";
 import config from "./config";
-// import routes, { buildRouter } from "./http/routes";
 import { buildRouter } from "./http/routes";
 
 // App:
@@ -14,18 +12,12 @@ export const buildApp = async (dbClient: MongoClient, opts = {}) => {
 
   // @todo: logging, observability
 
-  // db
-  // const mongoClient = "buildMongoClient(config)";
+  // db:
   await db.connect(dbClient);
   const purchaseRepository = db.buildPurchaseRepository(dbClient);
-  // app.register(db, { url: config.db.connectionStr, forceClose: true });
 
-  // routes
-  const service = "buildPurchaseService(config, purchaseRepository)";
-  // counst router = buildRouter(config, service)
+  // routes:
   const router = buildRouter(purchaseRepository);
-
-  // app.register(routes);
   app.register(router);
   // @todo: cors!
 
@@ -45,10 +37,6 @@ const start = async () => {
     console.error(err);
     process.exit(1);
   }
-  // finally {
-  //   await dbClient.close();
-  //   console.log("Disconnected database");
-  // }
 };
 
 start();
