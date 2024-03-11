@@ -4,7 +4,6 @@ import config from "../../config";
 import repository from "../../repository";
 import { GetByUserRequest } from "../../schemas/http/getByUserReqRes";
 import {
-  Error400Invalid,
   Error401Unauthorised,
   Error403Forbidden,
   UserFriendlyError,
