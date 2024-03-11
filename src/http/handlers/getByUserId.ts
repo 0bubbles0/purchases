@@ -1,39 +1,53 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 
+import config from "../../config";
 import repository from "../../repository";
 import { GetByUserRequest } from "../../schemas/http/getByUserReqRes";
+import {
+  Error400Invalid,
+  Error401Unauthorised,
+  Error403Forbidden,
+  UserFriendlyError,
+} from "../../schemas/http/errors";
 
 export const getByUserId = async (
   request: FastifyRequest<GetByUserRequest>,
   response: FastifyReply
 ) => {
-  // @todo: try catch
   try {
-    // @todo: validate request schema
     const { params, query, body, headers } = request;
     console.log("hiiiias handler", { params, query, body, headers });
 
-    const reqUserId = params.userId;
-    const authedUserId = headers["x-user-id"];
+    // Validate request syntax: -> Json schema validation already took care of it
+    const reqUserId = request.params.userId;
+    const authedUserId = request.headers["x-user-id"];
+    const authedClientId = request.headers["x-client-id"];
 
-    if (!reqUserId || !authedUserId || reqUserId !== authedUserId) {
-      throw new Error("403 Unauthorised");
+    const validClients = [
+      config.clientId.customerSupport,
+      config.clientId.shop,
+    ];
+    // @todo: validate filter, pagination syntax if present
+
+    // Authorise request:
+    if (!validClients.includes(authedClientId)) {
+      throw new Error403Forbidden();
     }
 
-    // if (!query.limit) {
-    //   return response.code(401).send({ data: "nooo" });
-    // }
+    if (reqUserId !== authedUserId) {
+      if (authedClientId !== config.clientId.customerSupport)
+        throw new Error401Unauthorised();
+    }
 
-    // @todo: authorise request
-
-    // @todo: service business logic & await db-queries
+    // Business logic & Queries:
     const results = await repository.getByUserId({ userId: reqUserId });
 
-    // @todo: send response
+    // Send response:
     return response.code(200).send({ data: results });
   } catch (e) {
-    // @todo: handle errors
-    console.error(e);
-    return response.code(403).send({ statusCode: 403, error: "Unauthorised" });
+    // Handle errors:
+    const error = e as UserFriendlyError;
+    console.error(error); // @todo: logging
+    return response.code(error.statusCode ?? 500).send(error);
   }
 };
