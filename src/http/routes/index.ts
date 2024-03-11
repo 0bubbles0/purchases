@@ -5,6 +5,7 @@ import handlers from "../handlers";
 import {
   GetByUserResponse,
   GetByUserRequest,
+  getByUserJsonSchema,
 } from "../../schemas/http/getByUserReqRes";
 
 const routes = async (
@@ -14,8 +15,9 @@ const routes = async (
   server.route<GetByUserRequest & GetByUserResponse>({
     method: "GET",
     url: "/user/:userId",
+    schema: getByUserJsonSchema,
     handler: handlers.getByUserId,
-    // @todo: schema/pre validation
+    // @todo: pre validation
   });
 };
 
