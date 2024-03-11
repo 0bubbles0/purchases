@@ -7,12 +7,13 @@ import { buildRouter } from "./http/routes";
 
 // App:
 // @todo: pass in config param
-export const buildApp = async (dbClient: MongoClient, opts = {}) => {
+export const buildApp = async (opts = {}) => {
   const app = fastify(opts);
 
   // @todo: logging, observability
 
   // db:
+  const dbClient = new MongoClient(config.db.connectionStr);
   await db.connect(dbClient);
   const purchaseRepository = db.buildPurchaseRepository(dbClient);
 
@@ -26,10 +27,8 @@ export const buildApp = async (dbClient: MongoClient, opts = {}) => {
 
 // Server:
 const start = async () => {
-  const dbClient = new MongoClient(config.db.connectionStr);
-
   try {
-    const app = await buildApp(dbClient);
+    const app = await buildApp();
 
     await app.listen({ port: config.port });
     console.log(`Server listening at port: ${config.port}`);

@@ -13,9 +13,6 @@ export const buildGetByUserIdHandler =
   (purchaseRepository: ReturnType<typeof buildPurchaseRepository>) =>
   async (request: FastifyRequest<GetByUserRequest>, response: FastifyReply) => {
     try {
-      const { params, query, body, headers } = request;
-      console.log("hiiiias handler", { params, query, body, headers });
-
       // Validate request syntax: -> Json schema validation already took care of it
       const reqUserId = request.params.userId;
       const authedUserId = request.headers["x-user-id"];
