@@ -1,4 +1,5 @@
 import { FastifyInstance, InjectOptions } from "fastify";
+import { MongoClient } from "mongodb";
 
 import { buildApp } from "../../server";
 import { MOCK_PURCHASE } from "../__test_data__/purchase";
@@ -10,7 +11,10 @@ const mockRequestDetails: InjectOptions = {
   url: "/user/123",
   query: {},
   payload: {},
-  headers: {},
+  headers: {
+    "x-user-id": "friend",
+    "x-client-id": "shop",
+  },
   cookies: {},
 };
 
@@ -22,7 +26,8 @@ describe("Basic route test", () => {
   beforeEach(() => jest.clearAllMocks());
 
   beforeAll(async () => {
-    app = await buildApp();
+    const dbClient = new MongoClient("");
+    app = await buildApp(dbClient);
     await app.listen({ port: 8005 });
     await app.ready();
   });
@@ -79,13 +84,12 @@ describe("Basic route test", () => {
     });
   });
 
-  test("GET '/' throws 403 if userId doesn't match", async () => {
+  test("GET '/' throws 401 if userId doesn't match", async () => {
     // Arrange:
     const mockRequest: InjectOptions = {
       ...mockRequestDetails,
       headers: {
         "x-user-id": "no-match",
-        "x-client-id": "customer-platform",
       },
     };
 
@@ -95,8 +99,8 @@ describe("Basic route test", () => {
     // Assert:
     expect(res.json()).toEqual({
       error: "Unauthorised",
-      statusCode: 403,
-      message: "You are unauthorised",
+      statusCode: 401,
+      message: "Unauthorised request",
     });
   });
 
@@ -116,6 +120,26 @@ describe("Basic route test", () => {
     // Assert:
     expect(res.json()).toEqual({
       data: [mockPurchase, mockPurchase, mockPurchase],
+    });
+  });
+
+  test("GET '/' throws 403 if request from wrong client", async () => {
+    // Arrange:
+    const mockRequest: InjectOptions = {
+      ...mockRequestDetails,
+      headers: {
+        "x-client-id": "suspicious-client",
+      },
+    };
+
+    // Act:
+    const res = await app.inject(mockRequest);
+
+    // Assert:
+    expect(res.json()).toEqual({
+      error: "Forbidden",
+      statusCode: 403,
+      message: "Access denied",
     });
   });
 

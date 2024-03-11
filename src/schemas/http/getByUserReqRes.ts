@@ -1,4 +1,8 @@
-// For internal dev TypeScript:
+import { Purchase } from "../models/purchase";
+import { UserFriendlyError } from "./errors";
+/** Instead of Typebox (very verbose), use both TypeScript & JSON for now */
+
+// TypeScript for internal dev work:
 export interface GetByUserRequest {
   Headers: {
     "x-user-id": string;
@@ -19,12 +23,16 @@ export interface GetByUserRequest {
 
 export interface GetByUserResponse {
   Reply: {
-    200: { success?: boolean; data: { price: number } };
+    200: { success?: boolean; data: Purchase[] };
+    400: typeof UserFriendlyError;
+    401: typeof UserFriendlyError;
+    403: typeof UserFriendlyError;
+    404: typeof UserFriendlyError;
+    500: typeof UserFriendlyError;
   };
 }
 
 // For API JSON schema validation:
-
 const headersJsonSchema = {
   type: "object",
   properties: {

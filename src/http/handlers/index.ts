@@ -1,3 +1,3 @@
-import { getByUserId } from "./getByUserId";
+// import { getByUserId } from "./getByUserId";
 
-export default { getByUserId };
+// export default { getByUserId };

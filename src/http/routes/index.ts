@@ -1,24 +1,39 @@
 import { FastifyInstance, FastifyPluginOptions } from "fastify";
 import fastifyPlugin from "fastify-plugin";
 
-import handlers from "../handlers";
+// import handlers from "../handlers";
 import {
   GetByUserResponse,
   GetByUserRequest,
   getByUserJsonSchema,
 } from "../../schemas/http/getByUserReqRes";
+import { buildGetByUserIdHandler } from "../handlers/getByUserId";
+import { buildPurchaseRepository } from "../../db/repositories/purchaseRepository";
 
-const routes = async (
-  server: FastifyInstance,
-  options: FastifyPluginOptions
-) => {
-  server.route<GetByUserRequest & GetByUserResponse>({
-    method: "GET",
-    url: "/user/:userId",
-    schema: getByUserJsonSchema,
-    handler: handlers.getByUserId,
-    // @todo: pre validation
-  });
-};
+export const buildRouter =
+  (purchaseRepository: ReturnType<typeof buildPurchaseRepository>) =>
+  async (server: FastifyInstance, options: FastifyPluginOptions) => {
+    server.route<GetByUserRequest & GetByUserResponse>({
+      method: "GET",
+      url: "/user/:userId",
+      schema: getByUserJsonSchema,
+      handler: buildGetByUserIdHandler(purchaseRepository),
+      // handler: handlers.getByUserId,
+      // @todo: pre validation
+    });
+  };
 
-export default fastifyPlugin(routes);
+// const routes = async (
+//   server: FastifyInstance,
+//   options: FastifyPluginOptions
+// ) => {
+//   server.route<GetByUserRequest & GetByUserResponse>({
+//     method: "GET",
+//     url: "/user/:userId",
+//     schema: getByUserJsonSchema,
+//     handler: handlers.getByUserId,
+//     // @todo: pre validation
+//   });
+// };
+
+// export default fastifyPlugin(routes);
